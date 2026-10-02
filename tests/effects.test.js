@@ -142,6 +142,12 @@ describe("postures and marks", () => {
   it("every posture has a drawn icon", () => {
     for (const p of POSTURES) expect(postureSvg(p)).toMatch(/<svg[\s\S]*<path/);
   });
+  it("icons are solid woodcut silhouettes, not stroked line figures", () => {
+    for (const p of POSTURES) {
+      expect(postureSvg(p)).toContain('viewBox="0 0 32 32"');
+      expect(postureSvg(p)).not.toMatch(/stroke/);
+    }
+  });
   it("posture change scribbles old and adds new icon", () => {
     const ctx = setup();
     const e = { id: "pc", type: "posture", target: "foot.sign", icon: "sign-cross", action: "change", to: "bow-head", source: {} };
