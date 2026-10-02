@@ -1,0 +1,7 @@
+.ph { --p: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.fx-strike, .fx-redact { position: absolute; left: -.15em; right: -.2em; pointer-events: none; transform-origin: left center; transform: scaleX(0); }
+.fx-strike { top: 52%; height: .12em; background: #c0392b; border-radius: .1em; rotate: var(--tilt, -1deg); opacity: .9; mix-blend-mode: multiply; }
+.fx-redact { top: .05em; bottom: -.05em; background: #141210; border-radius: .08em; box-shadow: 0 0 .5px .5px rgba(20,18,16,.6); }
+.fx-wrap > .fx-strike, .fx-wrap > .fx-redact { display: none; }
+.fx-strike-wrap { background: linear-gradient(#c0392b, #c0392b) no-repeat 0 55% / calc(var(--p) * 100%) .12em; }
+.fx-redact-wrap { background: linear-gradient(#141210, #141210) no-repeat 0 0 / calc(var(--p) * 100%) 100%; }
