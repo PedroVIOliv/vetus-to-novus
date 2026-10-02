@@ -188,3 +188,14 @@ describe("mark on a torn passage", () => {
     expect(m.parentElement.classList).toContain("tear-zone");
   });
 });
+
+describe("move lands after scraps already attached to its destination", () => {
+  it("keeps an added scrap directly under the block it belongs to", () => {
+    const ctx = setup();
+    getEffect("added").finish({ id: "ad", type: "added", target: "foot.sign", replacement: [{ id: "adx", kind: "prayer", text: "Doxology." }] }, ctx);
+    getEffect("moved").finish({ id: "mv", type: "moved", target: "foot.rub", destination: "foot.sign" }, ctx);
+    const sign = ctx.section.querySelector('[data-block="foot.sign"]');
+    expect(sign.nextElementSibling.classList).toContain("scrap-slot");
+    expect(sign.nextElementSibling.nextElementSibling.dataset.block).toBe("foot.rub");
+  });
+});

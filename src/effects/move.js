@@ -9,7 +9,9 @@ function relocate(edit, ctx) {
   ghost.className = "move-ghost";
   ghost.style.height = `${before.height}px`;
   blk.before(ghost);
-  blockOf(edit.destination, ctx).after(blk);
+  let anchor = blockOf(edit.destination, ctx);
+  while (anchor.nextElementSibling?.classList.contains("scrap-slot")) anchor = anchor.nextElementSibling;
+  anchor.after(blk);
   blk.dataset.moved = "1";
   blk.classList.add("is-moved");
   const after = blk.getBoundingClientRect();

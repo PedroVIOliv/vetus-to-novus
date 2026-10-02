@@ -82,18 +82,22 @@ One continuous column of pages at a comfortable reading width, desk visible eith
 side. Each section opens with a blue-and-gold illuminated blackletter initial and a
 red small-caps heading.
 
-### 4.3 Section rhythm
+### 4.3 Passage rhythm
 
-1. **Intact:** the section scrolls in untouched and is readable for a moment.
-2. **Edit:** when it reaches the trigger point in the viewport, its edits play in
-   order on their own timing (the hand's pace, not scroll-scrubbed).
-3. **Settled:** the edited section stays as it is.
+Edits are triggered per passage (all edits on one block, or one torn span), not per section,
+so nothing is edited before the reader has reached it.
+
+1. **Intact:** the passage scrolls in untouched.
+2. **Edit:** it plays once the whole passage is in the top half of the screen, or, for a
+   passage taller than that, once its first line is within the top 15% of the screen. A
+   short pause (≈0.8 s) precedes the first edit; edits then play on their own timing.
+3. **Settled:** the edited passage stays as it is.
 
 ### 4.4 One-way edits
 
 - Once triggered, edits play to completion and **never reverse**. Scrolling back shows
   the edited pages.
-- If the reader scrolls past before edits finish, they keep playing, or snap to
+- If the reader scrolls a passage out of the top of the screen before its edits finish, they keep playing, or snap to
   their final state once off-screen. A half-edited page is never seen on return.
 - A reload starts again from the intact book. Nothing is persisted.
 
