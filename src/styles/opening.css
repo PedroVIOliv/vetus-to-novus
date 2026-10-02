@@ -1,0 +1,12 @@
+.cover { height: 100vh; margin-top: -12vh; display: grid; place-items: center; perspective: 1600px; position: relative; }
+.cover-front {
+  width: min(78vw, 26rem); aspect-ratio: 3 / 4.2; display: grid; place-items: center; align-content: center; gap: 1.2rem;
+  background: radial-gradient(ellipse at 35% 25%, #5a1d18, #3b110d 70%, #250906);
+  border-radius: .3rem .6rem .6rem .3rem;
+  box-shadow: inset 6px 0 10px rgba(0,0,0,.45), inset 0 0 0 .6rem #3b110d, inset 0 0 0 .7rem rgba(201,162,58,.55), 0 30px 60px rgba(0,0,0,.7);
+  color: var(--gold); backface-visibility: hidden;
+}
+.cover-cross { font-size: 3rem; }
+.cover-title { font-variant: small-caps; letter-spacing: .25em; font-size: 1.1rem; }
+.scroll-hint { position: absolute; bottom: 2rem; margin: 0; color: #a8946a; font: 400 .8rem "IBM Plex Sans", sans-serif; letter-spacing: .3em; text-transform: uppercase; animation: hint 2.4s ease-in-out infinite; }
+@keyframes hint { 50% { transform: translateY(6px); opacity: .5; } }

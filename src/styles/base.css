@@ -1,6 +1,7 @@
 @import "./effects.css";
 @import "./scraps.css";
 @import "./tear.css";
+@import "./opening.css";
 :root {
   --desk-0: #3a2a1c; --desk-1: #1a120b; --desk-2: #0c0805;
   --paper-0: #fbf3df; --paper-1: #efe2c4; --paper-2: #d8c49c;
