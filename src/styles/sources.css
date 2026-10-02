@@ -1,0 +1,12 @@
+:root { --paper: #f6efdf; --ink: #1d1a16; --rubric: #b3261e; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.05rem/1.55 "EB Garamond", Georgia, serif; }
+.back { position: fixed; top: 1rem; left: 1rem; color: var(--rubric); font: 500 .8rem "IBM Plex Sans", sans-serif; letter-spacing: .06em; text-decoration: none; }
+.sources { max-width: 72rem; margin: 0 auto; padding: 4rem 16px 6rem; }
+.sources h1 { color: var(--rubric); font-variant: small-caps; letter-spacing: .12em; font-weight: 600; text-align: center; }
+.sources > p { max-width: 42rem; margin: 0 auto .8rem; }
+.table-wrap { overflow-x: auto; margin-top: 2rem; }
+table { border-collapse: collapse; width: 100%; min-width: 56rem; font-size: .9rem; }
+th { text-align: left; color: var(--rubric); font-variant: small-caps; letter-spacing: .06em; border-bottom: 2px solid var(--rubric); padding: .4rem .5rem; }
+td { vertical-align: top; border-bottom: 1px solid rgba(179,38,30,.25); padding: .5rem; }
+td:nth-child(3), td:nth-child(4), td:nth-child(5) { font: 400 .78rem/1.45 "IBM Plex Sans", sans-serif; color: #444; }
