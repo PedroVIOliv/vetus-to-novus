@@ -20,8 +20,10 @@ describe("readTime", () => {
 });
 
 describe("zoneState", () => {
-  it("is reading while the passage overlaps the middle band of the screen", () => {
+  it("is reading only once the passage's first line is in the upper half of the screen", () => {
     expect(zoneState({ top: 400, bottom: 500 }, vh)).toBe("reading");
+    expect(zoneState({ top: 700, bottom: 800 }, vh)).toBe("away"); // just appeared low on screen
+    expect(zoneState({ top: 860, bottom: 2400 }, vh)).toBe("away"); // tall passage, start near the bottom
     expect(zoneState({ top: 950, bottom: 1200 }, vh)).toBe("away");
     expect(zoneState({ top: -300, bottom: 50 }, vh)).toBe("away");
     expect(zoneState({ top: -300, bottom: -1 }, vh)).toBe("passed");

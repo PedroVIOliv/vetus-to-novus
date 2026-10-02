@@ -1,8 +1,10 @@
 // Decides when each passage is edited: only after the reader has had it in the middle of the
 // screen long enough to read it, one passage at a time, in page order.
 
-// The band of the screen (fractions of its height) where a passage counts as being read.
-export const READ_BAND = [0.12, 0.88];
+// A passage counts as being read once its first line is above READ_START (fraction of the
+// screen height from the top), until its last line rises above READ_END.
+export const READ_START = 0.55;
+export const READ_END = 0.12;
 const MS_PER_WORD = 120; // skimming pace, about 500 words a minute
 const MIN_MS = 800;
 const MAX_MS = 3500;
@@ -11,7 +13,7 @@ export const readTime = (words) => Math.min(MAX_MS, Math.max(MIN_MS, words * MS_
 
 export function zoneState(rect, vh) {
   if (rect.bottom <= 0) return "passed";
-  if (rect.top < vh * READ_BAND[1] && rect.bottom > vh * READ_BAND[0]) return "reading";
+  if (rect.top < vh * READ_START && rect.bottom > vh * READ_END) return "reading";
   return "away";
 }
 

@@ -88,8 +88,9 @@ Edits are triggered per passage (all edits on one block, or one torn span), not 
 so nothing is edited before the reader has reached it.
 
 1. **Intact:** the passage scrolls in untouched.
-2. **Edit:** it plays only after it has been in the reading band of the screen (12%–88% of
-   its height) long enough to be skimmed: about 0.12 s per word, at least 0.8 s and at most
+2. **Edit:** it plays only after its first line has been in the upper half of the
+   screen (above 55% of its height, until its last line rises above 12%) long enough to be
+   skimmed: about 0.12 s per word, at least 0.8 s and at most
    3.5 s. The time pauses while the passage is off the band and resumes when it returns.
    Passages play one at a time, in page order, and only while on screen. A short pause
    (≈0.3 s) precedes the first edit; edits then play on their own timing.
