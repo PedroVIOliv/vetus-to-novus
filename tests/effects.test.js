@@ -166,3 +166,15 @@ describe("repeated posture icons", () => {
     expect(book.querySelectorAll(".scribble")).toHaveLength(2);
   });
 });
+
+describe("mark on a torn passage", () => {
+  it("stays visible on the tear zone, not inside the falling piece", () => {
+    const ctx = setup();
+    const e = fixture.sections[0].edits[1];
+    getEffect("removed").finish(e, ctx);
+    mark.finish(e, ctx);
+    const m = ctx.section.querySelector(".mark");
+    expect(m.closest(".tear-piece")).toBeNull();
+    expect(m.parentElement.classList).toContain("tear-zone");
+  });
+});

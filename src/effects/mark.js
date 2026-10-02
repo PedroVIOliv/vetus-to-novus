@@ -9,8 +9,8 @@ function mount(edit, ctx) {
     m.dataset.edit = edit.id;
     m.textContent = edit.mark;
     m.style.setProperty("--rot", `${((seededRandom(`${edit.id}:m`)() - 0.5) * 10).toFixed(1)}deg`);
-    // Placed inside the block so it travels with it if the block moves or is torn.
-    blk.append(m);
+    // Inside the block so it travels with a moved block; beside the hole when the block is torn away.
+    (blk.closest(".tear-zone") ?? blk).append(m);
   }
   return m;
 }
