@@ -93,3 +93,28 @@ describe("tear", () => {
     expect([...zone.querySelectorAll(".blk")].map((b) => b.dataset.block)).toEqual(["foot.sign", "foot.ant"]);
   });
 });
+
+describe("optional and moved", () => {
+  it("optional: clip and option tabs attached to target, labelled with options", () => {
+    const ctx = setup();
+    const e = { id: "o1", type: "optional", target: "foot.sign", options: ["I", "II", "III", "IV"], replacement: [{ id: "o1r", kind: "rubric", text: "Or another Eucharistic Prayer." }], source: {} };
+    getEffect("optional").finish(e, ctx);
+    const blk = ctx.section.querySelector('[data-block="foot.sign"]');
+    expect([...blk.querySelectorAll(".opt-tab")].map((t) => t.textContent)).toEqual(["I", "II", "III", "IV"]);
+    expect(blk.querySelector(".opt-clip")).not.toBeNull();
+  });
+  it("moved: block relocated after destination, ghost left behind", () => {
+    const ctx = setup();
+    const e = { id: "m1", type: "moved", target: "foot.rub", destination: "foot.ant", source: {} };
+    getEffect("moved").finish(e, ctx);
+    const ant = ctx.section.querySelector('[data-block="foot.ant"]');
+    expect(ant.nextElementSibling.dataset.block).toBe("foot.rub");
+    expect(ctx.section.querySelector(".move-ghost")).not.toBeNull();
+  });
+  it("moved: finishing twice moves only once", () => {
+    const ctx = setup();
+    const e = { id: "m2", type: "moved", target: "foot.rub", destination: "foot.ant", source: {} };
+    getEffect("moved").finish(e, ctx); getEffect("moved").finish(e, ctx);
+    expect(ctx.section.querySelectorAll(".move-ghost")).toHaveLength(1);
+  });
+});

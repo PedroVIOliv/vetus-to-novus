@@ -5,3 +5,11 @@
 .fx-wrap > .fx-strike, .fx-wrap > .fx-redact { display: none; }
 .fx-strike-wrap { background: linear-gradient(#c0392b, #c0392b) no-repeat 0 55% / calc(var(--p) * 100%) .12em; }
 .fx-redact-wrap { background: linear-gradient(#141210, #141210) no-repeat 0 0 / calc(var(--p) * 100%) 100%; }
+.is-optional { position: relative; }
+.opt-clip { position: absolute; left: -1.1rem; top: -.6rem; width: .9rem; height: 2.4rem; border: 2px solid #b8a06a; border-radius: .5rem; opacity: 0; box-shadow: 1px 2px 2px rgba(0,0,0,.25); }
+.opt-fan { margin-top: .6rem; display: flex; gap: .8rem; align-items: flex-start; }
+.opt-tabs { display: flex; flex-direction: column; gap: .3rem; }
+.opt-tab { display: inline-block; padding: .1rem .5rem; background: #fbfbf8; font: 500 .72rem "IBM Plex Sans", sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,.3); opacity: 0; }
+.opt-fan .scrap { flex: 1; opacity: 0; }
+.is-cutting { --cut: 0; outline: 1.5px dashed rgba(40,40,40,calc(.6 * var(--cut))); outline-offset: .35rem; }
+.move-ghost { background: rgba(255,255,255,.2); box-shadow: inset 0 0 0 1px rgba(120,100,60,.15); margin: 0 0 .6rem; }
