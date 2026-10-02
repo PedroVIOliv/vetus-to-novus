@@ -50,6 +50,15 @@ describe("reader", () => {
     r.tick(600, vh);
     expect(p.controller.trigger).toHaveBeenCalledTimes(1);
   });
+  it("a passage taller than the screen waits until its last line is on screen", () => {
+    const p = passage({ top: 300, bottom: 1600 });
+    const r = createReader([p]);
+    r.tick(10000, vh);
+    expect(p.controller.trigger).not.toHaveBeenCalled();
+    p.rect = { top: -400, bottom: 850 };
+    r.tick(16, vh);
+    expect(p.controller.trigger).toHaveBeenCalledTimes(1);
+  });
   it("plays one passage at a time, in page order", () => {
     const a = passage({ top: 200, bottom: 300 }), b = passage({ top: 400, bottom: 500 });
     const r = createReader([a, b]);

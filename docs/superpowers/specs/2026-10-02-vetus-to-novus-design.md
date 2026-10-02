@@ -92,7 +92,8 @@ so nothing is edited before the reader has reached it.
    screen (above 55% of its height, until its last line rises above 12%) long enough to be
    skimmed: about 0.12 s per word, at least 0.8 s and at most
    3.5 s. The time pauses while the passage is off the band and resumes when it returns.
-   Passages play one at a time, in page order, and only while on screen. A short pause
+   A passage taller than the screen also waits until its last line is on screen (above 90%
+   of its height). Passages play one at a time, in page order, and only while on screen. A short pause
    (≈0.3 s) precedes the first edit; edits then play on their own timing.
 3. **Settled:** the edited passage stays as it is.
 

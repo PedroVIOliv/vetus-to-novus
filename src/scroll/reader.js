@@ -5,6 +5,9 @@
 // screen height from the top), until its last line rises above READ_END.
 export const READ_START = 0.55;
 export const READ_END = 0.12;
+// A passage is only edited once its last line is above this line, so a passage taller than
+// the screen is not edited before the reader has scrolled to its end.
+export const LAST_LINE_SEEN = 0.9;
 const MS_PER_WORD = 120; // skimming pace, about 500 words a minute
 const MIN_MS = 800;
 const MAX_MS = 3500;
@@ -19,7 +22,7 @@ export function zoneState(rect, vh) {
 
 // passages: [{ controller, need (ms), measure() → { top, bottom } }], in page order.
 export function createReader(passages) {
-  const ps = passages.map((p) => ({ ...p, dwell: 0, zone: "away" }));
+  const ps = passages.map((p) => ({ ...p, dwell: 0, zone: "away", rect: null }));
   let playing = null;
   return {
     tick(dt, vh) {
@@ -27,7 +30,8 @@ export function createReader(passages) {
       for (const p of ps) {
         const c = p.controller;
         if (c.state === "played") continue;
-        p.zone = zoneState(p.measure(), vh);
+        p.rect = p.measure();
+        p.zone = zoneState(p.rect, vh);
         if (p.zone === "passed") {
           c.leave();
           if (playing === p) playing = null;
@@ -36,7 +40,8 @@ export function createReader(passages) {
         }
       }
       if (!playing) {
-        const next = ps.find((p) => p.controller.state === "idle" && p.zone === "reading" && p.dwell >= p.need);
+        const next = ps.find((p) => p.controller.state === "idle" && p.zone === "reading"
+          && p.dwell >= p.need && p.rect.bottom <= vh * LAST_LINE_SEEN);
         if (next) {
           playing = next;
           next.controller.trigger();
