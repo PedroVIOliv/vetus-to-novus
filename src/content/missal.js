@@ -418,7 +418,7 @@ const communion = {
         n("co-doxology.2", "For yours are the kingdom, and the power, and the glory, for ever.", "R"),
       ],
       source: src("—", `${OM70}, embolism and acclamation`, "1970") },
-    { id: "co-paten", type: "rubric", target: "co.r2", phrase: "He signs himself with the paten and kisses it, then b",
+    { id: "co-paten", type: "rubric", target: "co.r2", phrase: "He signs himself with the paten and kisses it, then",
       source: src(`${RS62}, Libera nos`, ABSENT, "1970", "", "medium") },
     ...[1, 2, 3].map((k) => ({ id: `co-pax-cross${k}`, type: "rubric", target: "co.pax", phrase: "✠", occurrence: k,
       source: src(`${OM62}, Pax Domini (three crosses with a particle over the chalice)`, `${OM70}: no signs`, "1970", "", "medium") })),
