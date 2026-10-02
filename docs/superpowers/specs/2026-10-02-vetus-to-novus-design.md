@@ -88,9 +88,8 @@ Edits are triggered per passage (all edits on one block, or one torn span), not 
 so nothing is edited before the reader has reached it.
 
 1. **Intact:** the passage scrolls in untouched.
-2. **Edit:** it plays once the whole passage is in the top half of the screen, or, for a
-   passage taller than that, once its first line is within the top 15% of the screen. A
-   short pause (≈0.8 s) precedes the first edit; edits then play on their own timing.
+2. **Edit:** it plays once its first line is within the top 20% of the screen. A short
+   pause (≈0.8 s) precedes the first edit; edits then play on their own timing.
 3. **Settled:** the edited passage stays as it is.
 
 ### 4.4 One-way edits

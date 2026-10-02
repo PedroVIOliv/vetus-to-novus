@@ -17,13 +17,12 @@ describe("groupEdits", () => {
 
 describe("triggerRange", () => {
   const vh = 1000;
-  it("a short passage plays once all of it is in the top half of the screen", () => {
-    // passage spans 5000–5200 in the document: its bottom reaches mid-screen at scroll 4700
-    expect(triggerRange({ top: 5000, bottom: 5200, vh }).start).toBe(4700);
+  it("a passage plays once its first line reaches the top 20% of the screen", () => {
+    // passage starts at 5000 in the document: its top is 200px from the viewport top at scroll 4800
+    expect(triggerRange({ top: 5000, bottom: 5200, vh }).start).toBe(4800);
   });
-  it("a passage taller than half the screen plays once its start is near the top", () => {
-    // spans 5000–6200: bottom-at-midline would be 5700, past the point the start leaves view
-    expect(triggerRange({ top: 5000, bottom: 6200, vh }).start).toBe(4850);
+  it("tall passages follow the same rule", () => {
+    expect(triggerRange({ top: 5000, bottom: 6200, vh }).start).toBe(4800);
   });
   it("never starts before the page top and ends when the passage leaves the top", () => {
     const r = triggerRange({ top: 100, bottom: 200, vh });

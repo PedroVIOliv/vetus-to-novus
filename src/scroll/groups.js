@@ -10,10 +10,11 @@ export function groupEdits(edits) {
   return [...groups.values()];
 }
 
-// Scroll positions (document px) at which a passage spanning top..bottom starts and stops.
-// It starts once the whole passage is in the top half of the screen, or, for a passage
-// taller than that, once its first line is near the top, so it has been read either way.
+// Scroll positions (document px) at which a passage spanning top..bottom starts and stops:
+// it starts once its first line is within the top 20% of the screen.
+export const TRIGGER_LINE = 0.2;
+
 export function triggerRange({ top, bottom, vh }) {
-  const start = Math.max(0, Math.min(bottom - vh * 0.5, top - vh * 0.15));
+  const start = Math.max(0, top - vh * TRIGGER_LINE);
   return { start, end: Math.max(start + 1, bottom) };
 }
