@@ -76,3 +76,20 @@ describe("paste and add", () => {
     expect(next.textContent).toContain("Added.");
   });
 });
+
+describe("tear", () => {
+  it("removed: blocks move into a tear zone with a hole behind them", () => {
+    const ctx = setup();
+    getEffect("removed").finish(fixture.sections[0].edits[1], ctx);
+    const blk = ctx.section.querySelector('[data-block="foot.ant"]');
+    expect(blk.classList).toContain("is-torn");
+    expect(blk.closest(".tear-zone").querySelector(".hole")).not.toBeNull();
+  });
+  it("removed with extra targets tears all of them together", () => {
+    const ctx = setup();
+    const e = { id: "t2", type: "removed", target: "foot.sign", targets: ["foot.ant"], source: {} };
+    getEffect("removed").finish(e, ctx);
+    const zone = ctx.section.querySelector(".tear-zone");
+    expect([...zone.querySelectorAll(".blk")].map((b) => b.dataset.block)).toEqual(["foot.sign", "foot.ant"]);
+  });
+});
