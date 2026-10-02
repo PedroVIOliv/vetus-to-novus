@@ -118,3 +118,33 @@ describe("optional and moved", () => {
     expect(ctx.section.querySelectorAll(".move-ghost")).toHaveLength(1);
   });
 });
+
+import mark from "../src/effects/mark.js";
+import { postureSvg } from "../src/icons/postures.js";
+import { POSTURES } from "../src/content/schema.js";
+
+describe("postures and marks", () => {
+  it("every posture has a drawn icon", () => {
+    for (const p of POSTURES) expect(postureSvg(p)).toMatch(/<svg[\s\S]*<path/);
+  });
+  it("posture change scribbles old and adds new icon", () => {
+    const ctx = setup();
+    const e = { id: "pc", type: "posture", target: "foot.sign", icon: "sign-cross", action: "change", to: "bow-head", source: {} };
+    getEffect("posture").finish(e, ctx);
+    const m = ctx.section.querySelector('[data-block="foot.sign"] .margin');
+    expect(m.querySelector('.posture[data-icon="sign-cross"] .scribble')).not.toBeNull();
+    expect(m.querySelector('.posture.is-new[data-icon="bow-head"]')).not.toBeNull();
+  });
+  it("posture remove scribbles without adding an icon", () => {
+    const ctx = setup();
+    const e = { id: "pr", type: "posture", target: "foot.sign", icon: "sign-cross", action: "remove", source: {} };
+    getEffect("posture").finish(e, ctx);
+    expect(ctx.section.querySelectorAll(".posture.is-new")).toHaveLength(0);
+    expect(ctx.section.querySelector(".scribble")).not.toBeNull();
+  });
+  it("mark writes a margin note", () => {
+    const ctx = setup();
+    mark.finish(fixture.sections[0].edits[1], ctx);
+    expect(ctx.section.querySelector(".mark").textContent).toBe("omit");
+  });
+});
