@@ -14,7 +14,7 @@ function mount(edit, ctx) {
       b.classList.add("is-torn");
       piece.append(b);
     }
-    const shape = raggedPolygon(seededRandom(edit.id), { edges: ["top", "bottom"], amp: 6, step: 3 });
+    const shape = raggedPolygon(seededRandom(edit.id), { edges: ["top", "bottom"], amp: 7, step: 2.5 });
     const hole = document.createElement("div");
     hole.className = "hole";
     hole.style.clipPath = shape;

@@ -18,6 +18,11 @@ describe("util", () => {
     const a = seededRandom("x"), b = seededRandom("x");
     expect([a(), a()]).toEqual([b(), b()]);
   });
+  it("raggedPolygon keeps torn top/bottom edges a fixed pixel depth on any height", () => {
+    const poly = raggedPolygon(seededRandom("z"), { edges: ["top", "bottom"], amp: 6 });
+    expect(poly).toMatch(/calc\(0% \+ [\d.]+px\)/);
+    expect(poly).toMatch(/calc\(100% - [\d.]+px\)/);
+  });
   it("raggedPolygon produces a polygon", () => {
     expect(raggedPolygon(seededRandom("y"), { edges: ["top", "bottom"] })).toMatch(/^polygon\(/);
   });

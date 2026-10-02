@@ -8,15 +8,16 @@ export function seededRandom(seed) {
   };
 }
 
-// Ragged-edge polygon in % units; `edges` lists which sides are torn.
-export function raggedPolygon(rand, { edges = ["top", "right", "bottom", "left"], amp = 3, step = 4 } = {}) {
-  const off = (edge) => (edges.includes(edge) ? amp + (rand() - 0.5) * 2 * amp : 0);
+// Ragged-edge polygon; `edges` lists which sides are torn. Positions along an edge are in %,
+// the tear depth `amp` is in px so tall and short pieces tear equally deep.
+export function raggedPolygon(rand, { edges = ["top", "right", "bottom", "left"], amp = 6, step = 4 } = {}) {
+  const depth = (edge) => (edges.includes(edge) ? (amp * (0.4 + rand() * 1.2)).toFixed(1) : "0");
   const pts = [];
-  for (let x = 0; x <= 100; x += step) pts.push([x, off("top")]);
-  for (let y = step; y <= 100; y += step) pts.push([100 - off("right"), y]);
-  for (let x = 100 - step; x >= 0; x -= step) pts.push([x, 100 - off("bottom")]);
-  for (let y = 100 - step; y > 0; y -= step) pts.push([off("left"), y]);
-  return `polygon(${pts.map(([x, y]) => `${x.toFixed(2)}% ${y.toFixed(2)}%`).join(", ")})`;
+  for (let x = 0; x <= 100; x += step) pts.push(`${x}% calc(0% + ${depth("top")}px)`);
+  for (let y = step; y <= 100; y += step) pts.push(`calc(100% - ${depth("right")}px) ${y}%`);
+  for (let x = 100 - step; x >= 0; x -= step) pts.push(`${x}% calc(100% - ${depth("bottom")}px)`);
+  for (let y = 100 - step; y > 0; y -= step) pts.push(`calc(0% + ${depth("left")}px) ${y}%`);
+  return `polygon(${pts.join(", ")})`;
 }
 
 const esc = (s) => globalThis.CSS?.escape?.(s) ?? s.replace(/["\\]/g, "\\$&");

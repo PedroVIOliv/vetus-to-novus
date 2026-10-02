@@ -1,6 +1,6 @@
 .tear-zone { position: relative; margin: .3rem -1rem; perspective: 900px; }
 .tear-piece {
-  position: relative; z-index: 3; padding: .6rem 1rem;
+  position: relative; z-index: 3; padding: 1rem 1rem;
   background: radial-gradient(ellipse at 40% 20%, var(--paper-0), var(--paper-1));
   transform-origin: 50% 0;
 }
