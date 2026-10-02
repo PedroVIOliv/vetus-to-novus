@@ -1,7 +1,8 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { createSectionController } from "./controller.js";
-import { groupEdits, triggerRange } from "./groups.js";
+import { groupEdits } from "./groups.js";
+import { createReader, readTime } from "./reader.js";
 import { getEffect } from "../effects/index.js";
 import mark from "../effects/mark.js";
 
@@ -24,48 +25,44 @@ export function finishSection(edits, ctx) {
   }
 }
 
-// Edits move, insert and remove blocks, so trigger positions are recalculated after each passage.
-let refreshQueued = false;
-function queueRefresh() {
-  if (refreshQueued || !ScrollTrigger.refresh) return;
-  refreshQueued = true;
-  requestAnimationFrame(() => { refreshQueued = false; ScrollTrigger.refresh(); });
-}
-
-function passageRange(els) {
+// Positions are measured live each frame, so edits that grow or move the page never leave
+// a passage's position stale.
+function spanRect(els) {
   const rects = els.map((el) => el.getBoundingClientRect());
-  return triggerRange({
-    top: Math.min(...rects.map((r) => r.top)) + window.scrollY,
-    bottom: Math.max(...rects.map((r) => r.bottom)) + window.scrollY,
-    vh: window.innerHeight,
-  });
+  return { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) };
 }
 
-export function startEngine(missal, book, { reduced = false } = {}) {
+const wordCount = (els) => els.reduce((n, el) => n + el.textContent.trim().split(/\s+/).length, 0);
+
+export function startEngine(missal, book, { reduced = false, measure = spanRect, autostart = true } = {}) {
+  const passages = [];
   for (const s of missal.sections) {
     const section = book.querySelector(`[data-section="${s.id}"]`);
     const ctx = { section, root: book, gsap };
     for (const { span, edits } of groupEdits(s.edits)) {
       const els = span.map((id) => book.querySelector(`[data-block="${id}"]`));
-      const c = createSectionController({
+      const controller = createSectionController({
         edits,
-        buildTimeline: (es) => {
-          const tl = reduced
-            ? gsap.timeline({ paused: true }).add(() => finishSection(es, ctx)).fromTo(els, { opacity: 0.6 }, { opacity: 1, duration: 0.4 })
-            : buildSectionTimeline(es, ctx);
-          return tl.eventCallback("onComplete", queueRefresh);
-        },
-        finishAll: (es) => { finishSection(es, ctx); queueRefresh(); },
+        buildTimeline: (es) => reduced
+          ? gsap.timeline({ paused: true }).add(() => finishSection(es, ctx)).fromTo(els, { opacity: 0.6 }, { opacity: 1, duration: 0.4 })
+          : buildSectionTimeline(es, ctx),
+        finishAll: (es) => finishSection(es, ctx),
       });
-      ScrollTrigger.create({
-        trigger: els[0],
-        start: () => passageRange(els).start,
-        end: () => passageRange(els).end,
-        onEnter: () => c.trigger(),
-        onLeave: () => c.leave(),
-      });
+      passages.push({ controller, need: readTime(wordCount(els)), measure: () => measure(els) });
     }
   }
+  const reader = createReader(passages);
+  if (autostart) {
+    let last = performance.now();
+    const loop = (now) => {
+      // Capped so a long pause (hidden tab) doesn't count as reading time.
+      reader.tick(Math.min(now - last, 100), window.innerHeight);
+      last = now;
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+  return reader;
 }
 
 export function startOpening(cover) {

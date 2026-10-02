@@ -25,29 +25,21 @@ describe("engine", () => {
     expect(book.querySelector(".tear-piece").style.visibility).toBe("hidden");
     expect(book.querySelector(".mark").textContent).toBe("omit");
   });
-  it("creates one trigger per edited passage, wired to its controller", () => {
+  it("mounts nothing until a passage has been on screen long enough to read", () => {
     const book = mountBook();
-    startEngine(fixture, book);
-    expect(ScrollTrigger.create).toHaveBeenCalledTimes(2);
-    const tear = ScrollTrigger.create.mock.calls[1][0];
-    tear.onLeave(); // flicked past before it triggered
-    expect(book.querySelector('[data-block="foot.ant"]').classList).toContain("is-torn");
-    expect(book.querySelector(".fx-redact")).toBeNull(); // the other passage is untouched
-  });
-  it("mounts nothing until a passage's trigger fires", () => {
-    const book = mountBook();
-    startEngine(fixture, book);
+    const reader = startEngine(fixture, book, { autostart: false, measure: () => ({ top: 400, bottom: 500 }) });
+    reader.tick(500, 1000);
+    expect(book.querySelector(".fx-redact")).toBeNull();
     expect(book.querySelector(".tear-zone")).toBeNull();
-    ScrollTrigger.create.mock.calls[1][0].onEnter();
-    expect(book.querySelector(".tear-zone")).not.toBeNull();
+    reader.tick(3000, 1000);
+    expect(book.querySelector(".fx-redact")).not.toBeNull(); // first passage, in page order
+    expect(book.querySelector(".tear-zone")).toBeNull(); // the next waits its turn
   });
-  it("trigger positions are computed from the passage, in document px", () => {
+  it("a passage scrolled past before it played is finished at once", () => {
     const book = mountBook();
-    startEngine(fixture, book);
-    const t = ScrollTrigger.create.mock.calls[0][0];
-    expect(typeof t.start).toBe("function");
-    expect(typeof t.end).toBe("function");
-    expect(t.end()).toBeGreaterThanOrEqual(t.start());
+    const reader = startEngine(fixture, book, { autostart: false, measure: () => ({ top: -400, bottom: -10 }) });
+    reader.tick(16, 1000);
+    expect(book.querySelector('[data-block="foot.ant"]').classList).toContain("is-torn");
   });
 });
 
@@ -57,9 +49,11 @@ describe("reduced motion", () => {
   it("applies final state with no effect timelines", () => {
     const book = mountBook();
     const spy = vi.spyOn(effects.getEffect("removed"), "play");
-    startEngine(fixture, book, { reduced: true });
-    const t = ScrollTrigger.create.mock.calls[1][0];
-    t.onEnter(); t.onLeave();
+    let rect = { top: 400, bottom: 500 };
+    const reader = startEngine(fixture, book, { reduced: true, autostart: false, measure: () => rect });
+    reader.tick(10000, 1000);
+    rect = { top: -400, bottom: -10 };
+    reader.tick(16, 1000);
     expect(spy).not.toHaveBeenCalled();
     expect(book.querySelector('[data-block="foot.ant"]').classList).toContain("is-torn");
     spy.mockRestore();

@@ -88,15 +88,18 @@ Edits are triggered per passage (all edits on one block, or one torn span), not 
 so nothing is edited before the reader has reached it.
 
 1. **Intact:** the passage scrolls in untouched.
-2. **Edit:** it plays once its first line is within the top 20% of the screen. A short
-   pause (≈0.8 s) precedes the first edit; edits then play on their own timing.
+2. **Edit:** it plays only after it has been in the reading band of the screen (12%–88% of
+   its height) long enough to be read: about 0.24 s per word, at least 1.2 s and at most
+   7 s. The time pauses while the passage is off the band and resumes when it returns.
+   Passages play one at a time, in page order, and only while on screen. A short pause
+   (≈0.8 s) precedes the first edit; edits then play on their own timing.
 3. **Settled:** the edited passage stays as it is.
 
 ### 4.4 One-way edits
 
 - Once triggered, edits play to completion and **never reverse**. Scrolling back shows
   the edited pages.
-- If the reader scrolls a passage out of the top of the screen before its edits finish, they keep playing, or snap to
+- If the reader scrolls a passage off the top of the screen before it has played or finished, they keep playing, or snap to
   their final state once off-screen. A half-edited page is never seen on return.
 - A reload starts again from the intact book. Nothing is persisted.
 
