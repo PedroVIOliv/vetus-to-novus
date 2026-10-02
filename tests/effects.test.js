@@ -145,8 +145,14 @@ describe("postures and marks", () => {
   it("icons are solid woodcut silhouettes, not stroked line figures", () => {
     for (const p of POSTURES) {
       expect(postureSvg(p)).toContain('viewBox="0 0 32 32"');
-      expect(postureSvg(p)).not.toMatch(/stroke/);
+      expect(postureSvg(p).replace(/<mask[\s\S]*?<\/mask>/g, "")).not.toMatch(/stroke/);
     }
+  });
+  it("strike the breast cuts a gap around the arm with a mask unique to each icon", () => {
+    const a = postureSvg("strike-breast"), b = postureSvg("strike-breast");
+    const id = (svg) => svg.match(/<mask id="([^"]+)"/)[1];
+    expect(id(a)).not.toBe(id(b));
+    expect(a).toContain(`mask="url(#${id(a)})"`);
   });
   it("posture change scribbles old and adds new icon", () => {
     const ctx = setup();
