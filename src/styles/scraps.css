@@ -1,0 +1,17 @@
+.is-pasted { position: relative; }
+.is-pasted > .scrap { position: absolute; left: 4%; right: 2%; top: -.2rem; }
+.scrap-slot { overflow: visible; }
+.scrap-slot > .scrap { margin: .4rem 2% .9rem 6%; }
+.scrap {
+  --shadow: 0;
+  position: relative; z-index: 2; padding: .7rem .9rem; background: #fbfbf8; color: #222;
+  font: 400 .88rem/1.5 "IBM Plex Sans", system-ui, sans-serif;
+  box-shadow: 0 calc(2px + var(--shadow) * 22px) calc(6px + var(--shadow) * 24px) rgba(0,0,0,calc(.28 - var(--shadow) * .08));
+  background-image: linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px); background-size: 100% 1.32rem;
+}
+.scrap::before { content: ""; position: absolute; top: -.55rem; left: var(--tape-x); width: 3.4rem; height: 1.1rem; background: rgba(232,221,178,.78); rotate: 4deg; box-shadow: 0 1px 1px rgba(0,0,0,.08); }
+.scrap .blk { margin: 0 0 .25rem; }
+.scrap .blk--rubric { color: #8a3a32; font-style: normal; font-size: .78rem; }
+.scrap .blk--heading { color: #555; font: 500 .7rem "IBM Plex Sans", sans-serif; letter-spacing: .08em; text-transform: uppercase; text-align: left; margin: 0 0 .3rem; }
+.scrap .spk { color: #555; font-weight: 500; }
+.scrap .margin { display: none; }

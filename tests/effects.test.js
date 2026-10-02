@@ -51,3 +51,28 @@ describe("strike", () => {
     expect(ctx.section.querySelector('.ph[data-edit="e1"] .fx-strike')).not.toBeNull();
   });
 });
+
+describe("paste and add", () => {
+  it("rewritten: scrap covers target block", () => {
+    const ctx = setup();
+    const e = { id: "p1", type: "rewritten", target: "foot.ant", replacement: [{ id: "n1", kind: "prayer", text: "New words." }], source: {} };
+    getEffect("rewritten").finish(e, ctx);
+    const blk = ctx.section.querySelector('[data-block="foot.ant"]');
+    expect(blk.querySelector(":scope > .scrap").textContent).toContain("New words.");
+    expect(blk.classList).toContain("is-pasted");
+  });
+  it("rewritten: finishing twice does not duplicate the scrap", () => {
+    const ctx = setup();
+    const e = { id: "p2", type: "rewritten", target: "foot.ant", replacement: [{ id: "n3", kind: "prayer", text: "X." }], source: {} };
+    getEffect("rewritten").finish(e, ctx); getEffect("rewritten").finish(e, ctx);
+    expect(ctx.section.querySelectorAll(".scrap")).toHaveLength(1);
+  });
+  it("added: scrap inserted after target block", () => {
+    const ctx = setup();
+    const e = { id: "a1", type: "added", target: "foot.sign", replacement: [{ id: "n2", kind: "prayer", text: "Added." }], source: {} };
+    getEffect("added").finish(e, ctx);
+    const next = ctx.section.querySelector('[data-block="foot.sign"]').nextElementSibling;
+    expect(next.classList).toContain("scrap-slot");
+    expect(next.textContent).toContain("Added.");
+  });
+});
