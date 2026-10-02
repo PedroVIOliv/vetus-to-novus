@@ -1,3 +1,5 @@
+import { nthIndex } from "./text.js";
+
 export const EDIT_TYPES = ["removed", "rewritten", "shortened", "optional", "moved", "added", "rubric", "repetition", "posture"];
 export const BLOCK_KINDS = ["rubric", "versicle", "response", "prayer", "scripture", "heading"];
 export const POSTURES = ["kneel", "genuflect", "bow-profound", "bow-head", "strike-breast", "sign-cross", "stand", "face-altar"];
@@ -7,6 +9,7 @@ const NEEDS_REPLACEMENT = ["rewritten", "added", "optional"];
 export function validateMissal(missal) {
   const errs = [];
   const ids = new Set();
+  const phraseSlots = new Set();
   const blocks = new Map();
   const seen = (id, what) => {
     if (ids.has(id)) errs.push(`duplicate id ${id} (${what})`);
@@ -34,6 +37,10 @@ export function validateMissal(missal) {
       if (NEEDS_PHRASE.includes(e.type)) {
         if (!e.phrase) E("missing phrase");
         else if (t && !t.text.includes(e.phrase)) E(`phrase not found in ${e.target}`);
+        else if (t && nthIndex(t.text, e.phrase, e.occurrence ?? 1) < 0) E(`occurrence ${e.occurrence} of phrase not in ${e.target}`);
+        const slot = `${e.target}|${e.phrase}|${e.occurrence ?? 1}`;
+        if (phraseSlots.has(slot)) E(`same phrase occurrence as another edit`);
+        phraseSlots.add(slot);
       }
       if (NEEDS_REPLACEMENT.includes(e.type)) {
         if (!Array.isArray(e.replacement) || !e.replacement.length) E("missing replacement");

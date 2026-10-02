@@ -148,3 +148,16 @@ describe("postures and marks", () => {
     expect(ctx.section.querySelector(".mark").textContent).toBe("omit");
   });
 });
+
+describe("repeated posture icons", () => {
+  it("two remove edits on the same icon scribble two different icons", () => {
+    document.body.innerHTML = "";
+    const m = { sections: [{ id: "g", title: "G", initial: "Z", blocks: [{ id: "g1", kind: "rubric", text: "He genuflects, elevates, genuflects.", postures: ["genuflect", "genuflect"] }], edits: [] }] };
+    const book = renderBook(m, document); document.body.append(book);
+    const ctx = { section: book.querySelector(".sec"), root: book, gsap };
+    getEffect("posture").finish({ id: "g-a", type: "posture", target: "g1", icon: "genuflect", action: "remove" }, ctx);
+    getEffect("posture").finish({ id: "g-b", type: "posture", target: "g1", icon: "genuflect", action: "remove" }, ctx);
+    getEffect("posture").finish({ id: "g-a", type: "posture", target: "g1", icon: "genuflect", action: "remove" }, ctx);
+    expect(book.querySelectorAll(".scribble")).toHaveLength(2);
+  });
+});

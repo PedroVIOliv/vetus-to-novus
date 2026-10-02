@@ -12,7 +12,9 @@ function scribblePath(seed) {
 
 function mount(edit, ctx) {
   const m = blockOf(edit.target, ctx).querySelector(".margin");
-  const icon = m.querySelector(`.posture[data-icon="${edit.icon}"]:not(.is-new)`);
+  const icon = m.querySelector(`.posture[data-edit="${edit.id}"]`)
+    ?? m.querySelector(`.posture[data-icon="${edit.icon}"]:not(.is-new):not([data-edit])`);
+  icon.dataset.edit = edit.id;
   let scr = icon.querySelector(".scribble");
   if (!scr) {
     scr = document.createElementNS(NS, "svg");

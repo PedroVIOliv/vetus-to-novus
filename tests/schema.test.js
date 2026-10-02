@@ -55,3 +55,22 @@ describe("validateMissal", () => {
     expect(errs).toMatch(/duplicate.*b1/); expect(errs).toMatch(/kind/);
   });
 });
+
+describe("phrase occurrence", () => {
+  const withCrosses = () => {
+    const m = base();
+    m.sections[0].blocks[0].text = "bless ✠ these, ✠ those, ✠ them";
+    m.sections[0].edits[0] = { id: "e1", type: "rubric", target: "b1", phrase: "✠", occurrence: 3, source: { ...src } };
+    return m;
+  };
+  it("accepts an occurrence that exists", () => expect(validateMissal(withCrosses())).toEqual([]));
+  it("rejects an occurrence beyond the count", () => {
+    const m = withCrosses(); m.sections[0].edits[0].occurrence = 4;
+    expect(validateMissal(m).join()).toMatch(/e1.*occurrence/);
+  });
+  it("rejects two edits on the same phrase occurrence", () => {
+    const m = withCrosses();
+    m.sections[0].edits.push({ ...m.sections[0].edits[0], id: "e2" });
+    expect(validateMissal(m).join()).toMatch(/e2.*same/);
+  });
+});

@@ -1,5 +1,6 @@
 import { srNote } from "./srnote.js";
 import { postureSvg } from "../icons/postures.js";
+import { nthIndex } from "../content/text.js";
 
 const el = (doc, tag, cls, text) => {
   const n = doc.createElement(tag);
@@ -11,7 +12,7 @@ const el = (doc, tag, cls, text) => {
 function textWithPhrases(doc, text, phraseEdits) {
   const txt = el(doc, "span", "txt");
   const found = phraseEdits
-    .map((e) => ({ e, i: text.indexOf(e.phrase) }))
+    .map((e) => ({ e, i: nthIndex(text, e.phrase, e.occurrence ?? 1) }))
     .filter(({ i }) => i >= 0)
     .sort((a, b) => a.i - b.i);
   let cursor = 0;

@@ -23,11 +23,12 @@ Fact base for `src/content/missal.js`. **Needs user approval before Task 4.**
 | # | Change | Type | Vetus ref | Novus ref | Stage | Conf. | Notes |
 |---|---|---|---|---|---|---|---|
 | 1.1 | Sign of the Cross kept | (none) | OM1962, initium | OM1970, Ritus initiales | — | high | Shown intact. |
-| 1.2 | Greeting added (three forms: "Gratia Domini nostri…", "Gratia vobis et pax…", "Dominus vobiscum") | optional | — | OM1970, Ritus initiales | 1970 | high | Shown as option scraps. |
+| 1.2 | Greeting added (one of three forms: "Gratia Domini nostri…", "Gratia vobis et pax…", "Dominus vobiscum") | added | — | OM1970, Ritus initiales | 1970 | high | Shown as option scraps. |
 | 1.3 | Antiphon *Introibo* and Psalm 42 *Iudica me* with its *Gloria Patri* | removed | OM1962, Ps 42 | (absent) | 1964 (IO 48c) | high | Torn out. |
 | 1.4 | *Adiutorium nostrum* versicle | removed | OM1962 | (absent) | 1970 | high | |
 | 1.5 | Confiteor said twice (priest, then server) → once by all | repetition | OM1962, Confiteor | OM1970, Actus paenitentialis | 1970 | high | Server's Confiteor struck. |
-| 1.6 | Confiteor: Michael, John the Baptist, Peter and Paul no longer named (Mary, the angels and saints remain) | shortened | OM1962, Confiteor | OM1970, Confiteor | 1970 | high | Triple *mea culpa* kept. |
+| 1.6 | Confiteor, first half: confession made to God and the brethren only (Mary, Michael, John the Baptist, Peter and Paul, all the Saints dropped). Second half: Michael, John the Baptist, Peter and Paul dropped; Mary, the angels and saints remain | shortened | OM1962, Confiteor | OM1970, Confiteor | 1970 | high | Triple *mea culpa* kept. |
+| 1.6a | Server's *Misereatur* for the priest (goes with the second Confiteor) | removed | OM1962 | (absent) | 1970 | high | Priest's *Misereatur* for all kept. |
 | 1.7 | Confiteor: "and in what I have failed to do" (*et omissione*) added | added | — | OM1970, Confiteor | 1970 | high | Small inserted scrap. |
 | 1.8 | Penitential Act becomes one of three forms (Confiteor / versicles *Miserere nostri* / Kyrie with invocations) | optional | — | OM1970, Actus paenitentialis | 1970 | high | Real range shown. |
 | 1.9 | *Indulgentiam, absolutionem…* absolution | removed | OM1962 | (absent) | 1970 | high | *Misereatur* is kept. |
@@ -69,6 +70,7 @@ Fact base for `src/content/missal.js`. **Needs user approval before Task 4.**
 | 5.3 | *Deus, qui humanae substantiae* → reduced to *Per huius aquae et vini mysterium* | shortened | OM1962 | OM1970 | 1970 | high | Shorten to the surviving clause. |
 | 5.4 | *Offerimus tibi, Domine, calicem* → *Benedictus es… vinum* | rewritten | OM1962 | OM1970 | 1970 | high | |
 | 5.5 | Sign of the Cross with the chalice | rubric | Ritus servandus | (absent) | 1967 (TAA 9) | high | |
+| 5.5a | Blessing of the water poured into the chalice | rubric | Ritus servandus | (absent) | 1970 | medium | |
 | 5.6 | *In spiritu humilitatis* kept | (none) | — | — | — | high | |
 | 5.7 | *Veni, Sanctificator* (invocation with sign of the Cross over the gifts) | removed | OM1962 | (absent) | 1970 | high | |
 | 5.8 | Lavabo: Psalm 25:6–12 with *Gloria Patri* → one verse, *Lava me, Domine, ab iniquitate mea* | rewritten | OM1962 | OM1970 | 1970 | high | |
@@ -93,7 +95,7 @@ Fact base for `src/content/missal.js`. **Needs user approval before Task 4.**
 | 7.5 | Concluding "Per Christum Dominum nostrum. Amen" of each part made optional | shortened | OM1962 | OM1970, EP I (bracketed) | 1970 | high | |
 | 7.6 | Words over the bread: "which will be given up for you" added | added | OM1962 | OM1970 | 1970 | high | Inserted scrap. |
 | 7.7 | *Mysterium fidei* moved out of the words over the chalice → priest's invitation to an acclamation after the consecration | moved | OM1962 | OM1970 | 1970 | high | |
-| 7.8 | Memorial acclamation by the people added (three forms) | optional | — | OM1970 | 1970 | high | |
+| 7.8 | Memorial acclamation by the people added (one of three forms) | added | — | OM1970 | 1970 | high | |
 | 7.9 | *Haec quotiescumque feceritis…* → "Do this in memory of me" | rewritten | OM1962 | OM1970 | 1970 | high | |
 | 7.10 | Genuflections at the consecration: four (before and after each elevation) → two (after each showing) | posture (remove ×2) | Ritus servandus | OM1970 | 1967 (TAA 7) | high | |
 | 7.11 | Thumb and forefinger kept joined after the consecration | rubric | Ritus servandus | (absent) | 1967 (TAA 12) | high | |
@@ -107,7 +109,10 @@ Fact base for `src/content/missal.js`. **Needs user approval before Task 4.**
 | 8.1 | Pater noster said by priest alone (server answers *Sed libera nos*) → said by all | rubric | OM1962 | OM1970 | 1964 (IO 48g) | high | |
 | 8.2 | Embolism *Libera nos*: Mary, Peter, Paul and Andrew no longer invoked; sign of the Cross with the paten dropped | shortened | OM1962 | OM1970 | 1970 | high | |
 | 8.3 | Doxology "For the kingdom, the power and the glory are yours…" added | added | — | OM1970 | 1970 | high | |
-| 8.4 | Prayer for peace *Domine Iesu Christe, qui dixisti* and *Pax Domini* moved before the Agnus Dei; prayer now said aloud | moved | OM1962 (after Agnus Dei) | OM1970 | 1970 | high | |
+| 8.4 | Prayer for peace *Domine Iesu Christe, qui dixisti* moved from after the Agnus Dei to before the *Pax Domini*; now said aloud | moved | OM1962 (after Agnus Dei) | OM1970 | 1970 | high | |
+| 8.4a | *Pax Domini*: three signs of the Cross with a particle over the chalice dropped | rubric | OM1962 | OM1970 | 1970 | medium | |
+| 8.4b | *Haec commixtio*: "and consecration" dropped | shortened | OM1962 | OM1970 | 1970 | high | |
+| 8.4c | *Ecce Agnus Dei* moved before the priest's Communion | moved | OM1962 | OM1970 | 1970 | high | |
 | 8.5 | Sign of peace among all present (optional invitation) | added | — | OM1970 | 1970 | high | |
 | 8.6 | Agnus Dei kept; striking the breast at each petition dropped | posture (remove) | Ritus servandus | (absent) | 1970 | medium | |
 | 8.7 | Priest's two preparatory prayers (*Domine Iesu Christe, Fili Dei vivi* and *Perceptio*) → one or the other | optional | OM1962 | OM1970 | 1970 | high | |
@@ -126,7 +131,11 @@ Fact base for `src/content/missal.js`. **Needs user approval before Task 4.**
 | 9.2 | *Placeat tibi, sancta Trinitas* | removed | OM1962 | (absent) | 1967 silent (TAA 16); 1970 absent | high | |
 | 9.3 | Last Gospel (John 1:1–14), with genuflection at *Et Verbum caro factum est* | removed | OM1962 | (absent) | 1964 (IO 48j) | high | Final tear. |
 
-## Open items before encoding
+## Not encoded separately
+
+- Kissing of the altar: shown as a rubric redaction at each place it was dropped (Collect, Orate fratres, Postcommunion; blessing marked medium).
+
+## Open items
 
 1. Check every **medium** row line by line against scans of the editio typica (1962 *Ritus servandus*; 1970 Ordo Missae rubrics).
 2. Add GIRM 1969 paragraph numbers only after checking them.

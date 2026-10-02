@@ -43,3 +43,14 @@ describe("srNote", () => {
     expect(srNote({ type: "posture", action: "change", icon: "genuflect", to: "bow-profound" })).toBe("Posture changed in 1970: genuflect → profound bow.");
   });
 });
+
+describe("phrase occurrence rendering", () => {
+  it("wraps the nth occurrence and leaves the others", () => {
+    const m = { sections: [{ id: "c", title: "C", initial: "Z", blocks: [{ id: "c1", kind: "prayer", text: "bless ✠ these, ✠ those, ✠ them" }],
+      edits: [{ id: "x2", type: "rubric", target: "c1", phrase: "✠", occurrence: 2 }, { id: "x3", type: "rubric", target: "c1", phrase: "✠", occurrence: 3 }] }] };
+    const txt = renderBook(m, document).querySelector('[data-block="c1"] .txt');
+    expect(txt.textContent).toBe("bless ✠ these, ✠ those, ✠ them");
+    expect(txt.querySelectorAll(".ph")).toHaveLength(2);
+    expect(txt.innerHTML.indexOf('data-edit="x2"')).toBeGreaterThan(txt.innerHTML.indexOf("these"));
+  });
+});
