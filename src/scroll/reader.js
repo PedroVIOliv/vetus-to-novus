@@ -3,9 +3,9 @@
 
 // The band of the screen (fractions of its height) where a passage counts as being read.
 export const READ_BAND = [0.12, 0.88];
-const MS_PER_WORD = 240; // about 250 words a minute
-const MIN_MS = 1200;
-const MAX_MS = 7000;
+const MS_PER_WORD = 120; // skimming pace, about 500 words a minute
+const MIN_MS = 800;
+const MAX_MS = 3500;
 
 export const readTime = (words) => Math.min(MAX_MS, Math.max(MIN_MS, words * MS_PER_WORD));
 

@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function buildSectionTimeline(edits, ctx) {
   const tl = gsap.timeline({ paused: true });
   edits.forEach((e, i) => {
-    tl.add(getEffect(e.type).play(e, ctx).play(), i === 0 ? 0.8 : "+=0.35");
+    tl.add(getEffect(e.type).play(e, ctx).play(), i === 0 ? 0.3 : "+=0.35");
     if (e.mark) tl.add(mark.play(e, ctx).play(), "-=0.1");
   });
   return tl;

@@ -89,10 +89,10 @@ so nothing is edited before the reader has reached it.
 
 1. **Intact:** the passage scrolls in untouched.
 2. **Edit:** it plays only after it has been in the reading band of the screen (12%–88% of
-   its height) long enough to be read: about 0.24 s per word, at least 1.2 s and at most
-   7 s. The time pauses while the passage is off the band and resumes when it returns.
+   its height) long enough to be skimmed: about 0.12 s per word, at least 0.8 s and at most
+   3.5 s. The time pauses while the passage is off the band and resumes when it returns.
    Passages play one at a time, in page order, and only while on screen. A short pause
-   (≈0.8 s) precedes the first edit; edits then play on their own timing.
+   (≈0.3 s) precedes the first edit; edits then play on their own timing.
 3. **Settled:** the edited passage stays as it is.
 
 ### 4.4 One-way edits

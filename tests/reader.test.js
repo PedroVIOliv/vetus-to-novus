@@ -12,10 +12,10 @@ const passage = (rect, need = 2000) => {
 };
 
 describe("readTime", () => {
-  it("allows ~250 words a minute, between 1.2 s and 7 s", () => {
-    expect(readTime(2)).toBe(1200);
-    expect(readTime(20)).toBe(4800);
-    expect(readTime(400)).toBe(7000);
+  it("allows skimming pace, ~500 words a minute, between 0.8 s and 3.5 s", () => {
+    expect(readTime(2)).toBe(800);
+    expect(readTime(20)).toBe(2400);
+    expect(readTime(400)).toBe(3500);
   });
 });
 
