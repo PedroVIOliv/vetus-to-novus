@@ -42,6 +42,16 @@ describe("rubric redaction", () => {
     expect(ph.querySelector(".fx-redact")).not.toBeNull();
     expect(ph.classList).toContain("is-edited");
   });
+  it("finish hides the redacted text itself, so wrapped phrases are unreadable too", () => {
+    const ctx = setup();
+    getEffect("rubric").finish(fixture.sections[0].edits[0], ctx);
+    expect(ctx.section.querySelector('.ph[data-edit="e1"]').style.color).toBe("transparent");
+  });
+  it("strike leaves the text readable", () => {
+    const ctx = setup();
+    getEffect("shortened").finish({ ...fixture.sections[0].edits[0], type: "shortened" }, ctx);
+    expect(ctx.section.querySelector('.ph[data-edit="e1"]').style.color).toBe("");
+  });
   it("play returns a paused timeline", () => {
     const ctx = setup();
     const tl = getEffect("rubric").play(fixture.sections[0].edits[0], ctx);

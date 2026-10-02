@@ -6,7 +6,7 @@
 .fx-strike-wrap { background: linear-gradient(#c0392b, #c0392b) no-repeat 0 55% / calc(var(--p) * 100%) .12em; }
 .fx-redact-wrap { background: linear-gradient(#141210, #141210) no-repeat 0 0 / calc(var(--p) * 100%) 100%; }
 .is-optional { position: relative; }
-.opt-clip { position: absolute; left: -1.1rem; top: -.6rem; width: .9rem; height: 2.4rem; border: 2px solid #b8a06a; border-radius: .5rem; opacity: 0; box-shadow: 1px 2px 2px rgba(0,0,0,.25); }
+.opt-clip { position: absolute; right: -.4rem; top: -.9rem; width: .9rem; height: 2.4rem; border: 2px solid #b8a06a; border-radius: .5rem; opacity: 0; box-shadow: 1px 2px 2px rgba(0,0,0,.25); }
 .opt-fan { margin-top: .6rem; display: flex; gap: .8rem; align-items: flex-start; }
 .opt-tabs { display: flex; flex-direction: column; gap: .3rem; }
 .opt-tab { display: inline-block; padding: .1rem .5rem; background: #fbfbf8; font: 500 .72rem "IBM Plex Sans", sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,.3); opacity: 0; }
@@ -16,4 +16,5 @@
 .scribble { position: absolute; inset: -15%; width: 130%; height: 130%; overflow: visible; }
 .scribble path { fill: none; stroke: #1b1714; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
 .posture.is-new { color: var(--note); clip-path: inset(0 100% 0 0); }
-.mark { position: absolute; right: -3.4rem; top: 0; font: 400 1.35rem/1 "Caveat", cursive; color: var(--note); rotate: var(--rot); clip-path: inset(0 100% 0 0); white-space: nowrap; }
+.mark { position: absolute; right: -2.7rem; top: 0; font: 400 1.35rem/1 "Caveat", cursive; color: var(--note); rotate: var(--rot); clip-path: inset(0 100% 0 0); white-space: nowrap; }
+.tear-zone > .mark { right: -1.9rem; top: .2rem; z-index: 4; }

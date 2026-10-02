@@ -8,7 +8,7 @@
   .mark { right: .2rem; top: -.9rem; font-size: 1.15rem; }
   .tear-zone { margin: .3rem -.6rem; }
   .scrap { box-shadow: 0 2px 5px rgba(0,0,0,.25); }
-  .opt-clip { left: -.7rem; }
+  .tear-zone > .mark { right: .2rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .scroll-hint { animation: none; }
