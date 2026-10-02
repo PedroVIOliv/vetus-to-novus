@@ -1,0 +1,15 @@
+@media (max-width: 720px) {
+  html { font-size: 15px; }
+  .desk { padding: 8vh 16px 25vh; }
+  .book { padding: 1.6rem 1.1rem 2.5rem; transform: none; }
+  .margin { position: static; display: inline-flex; flex-direction: row; vertical-align: -.25rem; margin-right: .35rem; gap: .15rem; }
+  .posture { width: 1.15rem; height: 1.15rem; }
+  .initial { font-size: 2.8rem; }
+  .mark { right: .2rem; top: -.9rem; font-size: 1.15rem; }
+  .tear-zone { margin: .3rem -.6rem; }
+  .scrap { box-shadow: 0 2px 5px rgba(0,0,0,.25); }
+  .opt-clip { left: -.7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint { animation: none; }
+}

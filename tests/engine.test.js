@@ -34,3 +34,18 @@ describe("engine", () => {
     expect(book.querySelector('[data-block="foot.ant"]').classList).toContain("is-torn");
   });
 });
+
+import * as effects from "../src/effects/index.js";
+
+describe("reduced motion", () => {
+  it("applies final state with no effect timelines", () => {
+    const book = mountBook();
+    const spy = vi.spyOn(effects.getEffect("removed"), "play");
+    startEngine(fixture, book, { reduced: true });
+    const t = ScrollTrigger.create.mock.calls[0][0];
+    t.onEnter(); t.onLeave();
+    expect(spy).not.toHaveBeenCalled();
+    expect(book.querySelector('[data-block="foot.ant"]').classList).toContain("is-torn");
+    spy.mockRestore();
+  });
+});
