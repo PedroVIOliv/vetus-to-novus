@@ -5,7 +5,7 @@ function fakeTl() {
   return {
     done: null, p: 0, play: vi.fn(),
     progress(n) { this.p = n; if (n === 1) this.done?.(); },
-    eventCallback(_, fn) { this.done = fn; return this; },
+    eventCallback(_, fn) { if (fn === undefined) return this.done; this.done = fn; return this; },
   };
 }
 
@@ -16,6 +16,14 @@ describe("section controller", () => {
     c.trigger(); expect(c.state).toBe("playing"); expect(tl.play).toHaveBeenCalled();
     tl.progress(1); expect(c.state).toBe("played");
     c.trigger(); expect(build).toHaveBeenCalledTimes(1);
+  });
+  it("keeps an onComplete callback the timeline already had (GSAP holds only one)", () => {
+    const tl = fakeTl(); const refresh = vi.fn();
+    tl.eventCallback("onComplete", refresh);
+    const c = createSectionController({ edits: [1], buildTimeline: () => tl, finishAll: vi.fn() });
+    c.trigger(); tl.progress(1);
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(c.state).toBe("played");
   });
   it("leaving while playing completes instantly", () => {
     const tl = fakeTl();

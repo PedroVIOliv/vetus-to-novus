@@ -6,7 +6,9 @@ export function createSectionController({ edits, buildTimeline, finishAll }) {
       if (c.state !== "idle") return;
       c.state = "playing";
       tl = buildTimeline(edits);
-      tl.eventCallback("onComplete", () => { c.state = "played"; });
+      // GSAP keeps one onComplete per timeline; chain onto any the builder already set.
+      const prev = tl.eventCallback("onComplete");
+      tl.eventCallback("onComplete", () => { prev?.(); c.state = "played"; });
       tl.play();
     },
     // Called only when the reader scrolls down past the section's end.
