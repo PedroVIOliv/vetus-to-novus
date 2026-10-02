@@ -1,0 +1,49 @@
+:root {
+  --desk-0: #3a2a1c; --desk-1: #1a120b; --desk-2: #0c0805;
+  --paper-0: #fbf3df; --paper-1: #efe2c4; --paper-2: #d8c49c;
+  --ink: #1d1a16; --rubric: #b3261e; --note: #2b4a8a;
+  --initial-a: #1f3f8a; --initial-b: #3a5fbf; --gold: #c9a23a;
+  --measure: 38rem;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--desk-2);
+  background-image: radial-gradient(ellipse at 50% 30%, var(--desk-0) 0%, var(--desk-1) 55%, var(--desk-2) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font: 400 1.125rem/1.55 "EB Garamond", Georgia, serif;
+}
+.desk { padding: 12vh 1rem 30vh; overflow-x: clip; }
+.book {
+  max-width: var(--measure); margin: 0 auto; padding: 3rem 3rem 4rem 4rem;
+  background: radial-gradient(ellipse at 40% 20%, var(--paper-0) 0%, var(--paper-1) 65%, var(--paper-2) 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 120px rgba(255,190,110,.10);
+  transform: rotate(-.4deg);
+  position: relative;
+}
+.title-page { text-align: center; padding: 4rem 0 5rem; }
+.tp-kicker { color: var(--rubric); letter-spacing: .3em; text-transform: uppercase; font-size: .9rem; margin: 0; }
+.tp-title { font-weight: 600; font-variant: small-caps; letter-spacing: .1em; font-size: 2.6rem; margin: .4rem 0; }
+.tp-year { color: var(--rubric); letter-spacing: .25em; margin: 0; }
+.sec { position: relative; padding: 1.5rem 0 2rem; }
+.sec-title { color: var(--rubric); font-variant: small-caps; letter-spacing: .12em; font-weight: 600; font-size: 1.35rem; margin: 0 0 .8rem; text-align: center; }
+.blk { position: relative; margin: 0 0 .6rem; }
+.blk::after { content: ""; display: table; clear: both; }
+.blk--rubric { color: var(--rubric); font-style: italic; font-size: .95rem; }
+.blk--scripture { font-style: italic; }
+.blk--heading { color: var(--rubric); font-variant: small-caps; letter-spacing: .08em; text-align: center; margin-top: 1rem; }
+.spk { color: var(--rubric); font-weight: 600; }
+.ph { position: relative; }
+.initial {
+  float: left; font-family: "UnifrakturMaguntia", serif; font-size: 3.6rem; line-height: .85;
+  color: #fff8e6; background: linear-gradient(135deg, var(--initial-a), var(--initial-b));
+  border: 2px solid var(--gold); box-shadow: 0 0 0 3px var(--rubric);
+  padding: .45rem .6rem .3rem; margin: .2rem .7rem 0 0;
+}
+.margin { position: absolute; left: -2.6rem; top: .15rem; display: flex; flex-direction: column; gap: .2rem; }
+.posture { display: block; width: 1.4rem; height: 1.4rem; color: var(--rubric); position: relative; }
+.posture .ico { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sources-link { position: fixed; right: 1rem; bottom: 1rem; z-index: 50; color: #c9b48a; font: 500 .75rem "IBM Plex Sans", sans-serif; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; opacity: .6; }
+.sources-link:hover { opacity: 1; }
