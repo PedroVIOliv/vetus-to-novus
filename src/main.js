@@ -3,12 +3,22 @@ import { renderBook } from "./render/book.js";
 import { startEngine, startOpening } from "./scroll/engine.js";
 
 const desk = document.getElementById("desk");
-const cover = document.createElement("div");
-cover.className = "cover";
-cover.innerHTML = `<div class="cover-front"><span class="cover-cross">✠</span><span class="cover-title">Missale Romanum</span></div><p class="scroll-hint">scroll</p>`;
+const stage = document.createElement("div");
+stage.className = "stage";
 const book = renderBook(missal, document);
-desk.append(cover, book);
+stage.append(book);
+desk.append(stage);
 
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (!reduced) startOpening(cover);
+if (!reduced) {
+  const cover = document.createElement("div");
+  cover.className = "cover";
+  cover.innerHTML = `<span class="cover-cross">✠</span><span class="cover-title">Missale Romanum</span>`;
+  const hint = document.createElement("p");
+  hint.className = "scroll-hint";
+  hint.textContent = "scroll";
+  stage.append(cover);
+  document.body.append(hint);
+  startOpening({ desk, stage, book, cover, hint });
+}
 startEngine(missal, book, { reduced });

@@ -77,8 +77,31 @@ export function startEngine(missal, book, { reduced = false, measure = spanRect,
   return reader;
 }
 
-export function startOpening(cover) {
-  gsap.timeline({ scrollTrigger: { trigger: cover, start: "top top", end: "+=90%", scrub: 0.6, pin: true } })
-    .to(cover.querySelector(".cover-front"), { rotationY: -165, transformOrigin: "left center", ease: "power1.inOut" })
-    .to(cover.querySelector(".scroll-hint"), { opacity: 0, duration: 0.2 }, 0);
+export const OPENING_PAGE_RATIO = 1.4; // page height / width, the cover's 3:4.2
+
+// The closed book sits small and centred on the desk over the first page. Scrolling swings the
+// cover open, then the page grows to reading size; the desk stays pinned until it has.
+export function startOpening({ desk, stage, book, cover, hint }) {
+  const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const pageH = () => book.offsetWidth * OPENING_PAGE_RATIO;
+  const closedScale = () => Math.min(1, Math.min(innerWidth * 0.78, 26 * rem()) / book.offsetWidth);
+  const stageTop = () => parseFloat(getComputedStyle(desk).paddingTop);
+  const closedY = () => (innerHeight - pageH() * closedScale()) / 2 - stageTop();
+  // While closed, the book is cut off below its first page; as the zoom starts the cut slides
+  // down to the bottom of the screen, and stays below it as the page grows.
+  const pageCut = () => `inset(0px 0px ${book.offsetHeight - pageH()}px 0px)`;
+  const screenCut = () => `inset(0px 0px ${Math.max(0, book.offsetHeight - (innerHeight - stageTop() - closedY()) / closedScale())}px 0px)`;
+  // Seen from in front of the page's centre, at the distance the original 26rem cover used.
+  const perspective = () => gsap.set(stage, { perspective: book.offsetWidth * 3.85, perspectiveOrigin: `50% ${pageH() / 2}px` });
+  perspective();
+  ScrollTrigger.addEventListener("refreshInit", perspective);
+
+  gsap.timeline({ scrollTrigger: { trigger: desk, start: "top top", end: "+=180%", scrub: 0.6, pin: true, invalidateOnRefresh: true } })
+    .to(hint, { opacity: 0, duration: 0.2 }, 0)
+    .fromTo(cover, { rotationY: 0 }, { rotationY: -165, transformOrigin: "left center", ease: "power1.inOut", duration: 1 }, 0)
+    .set(cover, { visibility: "hidden" })
+    .fromTo(stage, { scale: closedScale, y: closedY }, { scale: 1, y: 0, ease: "power2.inOut", duration: 1.2 }, ">")
+    .fromTo(book, { clipPath: pageCut }, { clipPath: screenCut, ease: "power1.out", duration: 0.4 }, "<")
+    .set(book, { clipPath: "none" }, ">0.8");
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }

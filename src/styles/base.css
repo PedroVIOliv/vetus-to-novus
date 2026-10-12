@@ -24,7 +24,7 @@ body {
   max-width: var(--measure); margin: 0 auto; padding: 3rem 3rem 4rem 4rem;
   background: radial-gradient(ellipse at 40% 20%, var(--paper-0) 0%, var(--paper-1) 65%, var(--paper-2) 100%);
   box-shadow: 0 20px 60px rgba(0,0,0,.65), 0 0 120px rgba(255,190,110,.10);
-  transform: rotate(-.4deg);
+  transform: rotate(-.4deg); transform-origin: 50% 0; /* pivots at the first page, so the cover lies square on it */
   position: relative;
 }
 .title-page { text-align: center; padding: 4rem 0 5rem; }

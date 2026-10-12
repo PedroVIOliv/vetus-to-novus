@@ -1,12 +1,17 @@
-.cover { height: 100vh; margin-top: -12vh; display: grid; place-items: center; perspective: 1600px; position: relative; }
-.cover-front {
-  width: min(78vw, 26rem); aspect-ratio: 3 / 4.2; display: grid; place-items: center; align-content: center; gap: 1.2rem;
+.stage { position: relative; transform-origin: 50% 0; }
+/* Lies over the book's first page (OPENING_PAGE_RATIO), overhanging it a little like a real cover. */
+.cover {
+  --overhang: 6px;
+  position: absolute; z-index: 5; top: calc(-1 * var(--overhang)); left: 0; right: 0; margin: 0 auto;
+  width: calc(min(var(--measure), 100%) + 2 * var(--overhang)); aspect-ratio: 3 / 4.2;
+  display: grid; place-items: center; align-content: center; gap: 1.8rem;
   background: radial-gradient(ellipse at 35% 25%, #5a1d18, #3b110d 70%, #250906);
   border-radius: .3rem .6rem .6rem .3rem;
-  box-shadow: inset 6px 0 10px rgba(0,0,0,.45), inset 0 0 0 .6rem #3b110d, inset 0 0 0 .7rem rgba(201,162,58,.55), 0 30px 60px rgba(0,0,0,.7);
+  box-shadow: inset 6px 0 10px rgba(0,0,0,.45), inset 0 0 0 .9rem #3b110d, inset 0 0 0 1rem rgba(201,162,58,.55), 0 30px 60px rgba(0,0,0,.7);
   color: var(--gold); backface-visibility: hidden;
 }
-.cover-cross { font-size: 3rem; }
-.cover-title { font-variant: small-caps; letter-spacing: .25em; font-size: 1.1rem; }
-.scroll-hint { position: absolute; bottom: 2rem; margin: 0; color: #a8946a; font: 400 .8rem "IBM Plex Sans", sans-serif; letter-spacing: .3em; text-transform: uppercase; animation: hint 2.4s ease-in-out infinite; }
+/* The closed book is shown at about two thirds size, so the lettering is drawn larger. */
+.cover-cross { font-size: 4.4rem; }
+.cover-title { font-variant: small-caps; letter-spacing: .25em; font-size: 1.6rem; }
+.scroll-hint { position: fixed; z-index: 6; left: 0; right: 0; bottom: 2rem; margin: 0; text-align: center; pointer-events: none; color: #a8946a; font: 400 .8rem "IBM Plex Sans", sans-serif; letter-spacing: .3em; text-transform: uppercase; animation: hint 2.4s ease-in-out infinite; }
 @keyframes hint { 50% { transform: translateY(6px); opacity: .5; } }
