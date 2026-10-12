@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { createSectionController } from "./controller.js";
 import { groupEdits } from "./groups.js";
-import { createReader, readTime } from "./reader.js";
+import { createReader } from "./reader.js";
 import { getEffect } from "../effects/index.js";
 import mark from "../effects/mark.js";
 
@@ -26,20 +26,35 @@ export function finishSection(edits, ctx) {
 }
 
 // Positions are measured live each frame, so edits that grow or move the page never leave
-// a passage's position stale.
+// a passage's position stale. Only the passage's own words count: blocks also hold space
+// reserved for scraps that have not appeared yet.
 function spanRect(els) {
-  const rects = els.map((el) => el.getBoundingClientRect());
+  const rects = els.flatMap((el) => {
+    const words = el.querySelectorAll(":scope > .initial, :scope > .txt");
+    return words.length ? [...words].map((w) => w.getBoundingClientRect()) : [el.getBoundingClientRect()];
+  });
   return { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) };
 }
 
-const wordCount = (els) => els.reduce((n, el) => n + el.textContent.trim().split(/\s+/).length, 0);
+// Every edit that adds or moves page content takes its final space up front, hidden, so
+// playing an edit never changes the height of the page. Moves go last so they land after
+// scraps attached to their destination.
+export function preparePage(missal, book) {
+  const ctxs = missal.sections.map((s) => ({ section: book.querySelector(`[data-section="${s.id}"]`), root: book, gsap }));
+  for (const moves of [false, true]) {
+    missal.sections.forEach((s, i) => {
+      for (const e of s.edits) if ((e.type === "moved") === moves) getEffect(e.type).prepare?.(e, ctxs[i]);
+    });
+  }
+}
 
 export function startEngine(missal, book, { reduced = false, measure = spanRect, autostart = true } = {}) {
+  preparePage(missal, book);
   const passages = [];
   for (const s of missal.sections) {
     const section = book.querySelector(`[data-section="${s.id}"]`);
     const ctx = { section, root: book, gsap };
-    for (const { span, edits } of groupEdits(s.edits)) {
+    for (const { span, edits, strikeOnly } of groupEdits(s.edits)) {
       const els = span.map((id) => book.querySelector(`[data-block="${id}"]`));
       const controller = createSectionController({
         edits,
@@ -48,16 +63,13 @@ export function startEngine(missal, book, { reduced = false, measure = spanRect,
           : buildSectionTimeline(es, ctx),
         finishAll: (es) => finishSection(es, ctx),
       });
-      passages.push({ controller, need: readTime(wordCount(els)), measure: () => measure(els) });
+      passages.push({ controller, strikeOnly, measure: () => measure(els) });
     }
   }
   const reader = createReader(passages);
   if (autostart) {
-    let last = performance.now();
-    const loop = (now) => {
-      // Capped so a long pause (hidden tab) doesn't count as reading time.
-      reader.tick(Math.min(now - last, 100), window.innerHeight);
-      last = now;
+    const loop = () => {
+      reader.tick(window.innerHeight);
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);

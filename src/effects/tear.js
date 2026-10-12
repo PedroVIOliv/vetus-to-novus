@@ -25,11 +25,13 @@ function mount(edit, ctx) {
 }
 
 export default {
+  prepare: mount,
   play(edit, ctx) {
     const { hole, piece } = mount(edit, ctx);
     const r = seededRandom(`${edit.id}:fall`);
     const dir = r() > 0.5 ? 1 : -1;
     return ctx.gsap.timeline({ paused: true })
+      .call(() => hole.parentElement.classList.add("is-open"))
       .set(hole, { opacity: 1 })
       .to(piece, { rotation: dir * 1.5, y: -6, duration: 0.25, ease: "power1.out" })
       .to(piece, { rotation: dir * (14 + r() * 10), rotationX: 25, x: dir * 80, y: "+=320", opacity: 0, duration: 1.1, ease: "power2.in" })
@@ -37,6 +39,7 @@ export default {
   },
   finish(edit, ctx) {
     const { hole, piece } = mount(edit, ctx);
+    hole.parentElement.classList.add("is-open");
     ctx.gsap.set(hole, { opacity: 1 });
     ctx.gsap.set(piece, { opacity: 0, visibility: "hidden" });
   },

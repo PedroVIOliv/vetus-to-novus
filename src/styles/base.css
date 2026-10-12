@@ -18,7 +18,8 @@ body {
   color: var(--ink);
   font: 400 1.125rem/1.55 "EB Garamond", Georgia, serif;
 }
-.desk { padding: 12vh 1rem 30vh; overflow-x: clip; }
+/* The bottom space lets the last passage's last line scroll up to READ_DONE (src/scroll/reader.js). */
+.desk { padding: 12vh 1rem 80vh; overflow-x: clip; }
 .book {
   max-width: var(--measure); margin: 0 auto; padding: 3rem 3rem 4rem 4rem;
   background: radial-gradient(ellipse at 40% 20%, var(--paper-0) 0%, var(--paper-1) 65%, var(--paper-2) 100%);

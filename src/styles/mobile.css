@@ -1,6 +1,6 @@
 @media (max-width: 720px) {
   html { font-size: 15px; }
-  .desk { padding: 8vh 16px 25vh; }
+  .desk { padding: 8vh 16px 80vh; }
   .book { padding: 1.6rem 1.1rem 2.5rem; transform: none; }
   .margin { position: static; display: inline-flex; flex-direction: row; vertical-align: -.25rem; margin-right: .35rem; gap: .15rem; }
   .posture { width: 1.15rem; height: 1.15rem; }

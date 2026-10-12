@@ -211,3 +211,48 @@ describe("move lands after scraps already attached to its destination", () => {
     expect(sign.nextElementSibling.nextElementSibling.dataset.block).toBe("foot.rub");
   });
 });
+
+describe("prepare lays out an edit's final space without showing it", () => {
+  it("added: the slot is in place and the scrap hidden until played", () => {
+    const ctx = setup();
+    const e = { id: "pa", type: "added", target: "foot.sign", replacement: [{ id: "pax", kind: "prayer", text: "Added." }] };
+    getEffect("added").prepare(e, ctx);
+    const slot = ctx.section.querySelector('[data-block="foot.sign"]').nextElementSibling;
+    expect(slot.classList).toContain("scrap-slot");
+    expect(slot.style.height).toBe("");
+    expect(slot.firstElementChild.style.opacity).toBe("0");
+    getEffect("added").finish(e, ctx);
+    expect(slot.firstElementChild.style.opacity).toBe("1");
+  });
+  it("rewritten: the scrap is attached but hidden until played", () => {
+    const ctx = setup();
+    const e = { id: "pp", type: "rewritten", target: "foot.ant", replacement: [{ id: "ppx", kind: "prayer", text: "New." }] };
+    getEffect("rewritten").prepare(e, ctx);
+    expect(ctx.section.querySelector('[data-block="foot.ant"] > .scrap').style.opacity).toBe("0");
+  });
+  it("moved: a hidden copy holds the destination, and the block takes its place", () => {
+    const ctx = setup();
+    const e = { id: "pm", type: "moved", target: "foot.rub", destination: "foot.ant" };
+    getEffect("moved").prepare(e, ctx);
+    const slot = ctx.section.querySelector('[data-block="foot.ant"]').nextElementSibling;
+    expect(slot.classList).toContain("move-slot");
+    expect(slot.textContent).toBe(ctx.section.querySelector('[data-block="foot.rub"]').textContent);
+    expect(slot.querySelector("[data-block], [data-edit]")).toBeNull();
+    expect(ctx.section.querySelectorAll('[data-block="foot.rub"]')).toHaveLength(1);
+    getEffect("moved").finish(e, ctx);
+    expect(ctx.section.querySelector(".move-slot")).toBeNull();
+    expect(ctx.section.querySelector('[data-block="foot.ant"]').nextElementSibling.dataset.block).toBe("foot.rub");
+  });
+  it("moved onto a block that is itself waiting to move: lands after that block's new place", () => {
+    const ctx = setup();
+    const first = { id: "c1", type: "moved", target: "foot.rub", destination: "foot.ant" };
+    const second = { id: "c2", type: "moved", target: "foot.sign", destination: "foot.rub" };
+    getEffect("moved").prepare(first, ctx);
+    getEffect("moved").prepare(second, ctx);
+    getEffect("moved").finish(first, ctx);
+    getEffect("moved").finish(second, ctx);
+    const order = [...ctx.section.querySelectorAll(".blk[data-block]")].map((b) => b.dataset.block);
+    expect(order).toEqual(["foot.ant", "foot.rub", "foot.sign"]);
+    expect(ctx.section.querySelector(".move-slot")).toBeNull();
+  });
+});

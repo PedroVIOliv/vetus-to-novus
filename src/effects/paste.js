@@ -23,18 +23,30 @@ function mount(edit, ctx) {
 }
 
 // The scrap is absolutely positioned, so the block must grow to fit a longer replacement.
-const settle = (blk, s) => { blk.style.minHeight = `${s.offsetHeight}px`; };
+// Kept in sync as fonts load and the column resizes.
+function reserve(blk, s) {
+  const settle = () => { blk.style.minHeight = `${s.offsetHeight}px`; };
+  settle();
+  if (!s.dataset.reserved && typeof ResizeObserver !== "undefined") new ResizeObserver(settle).observe(s);
+  s.dataset.reserved = "1";
+}
 
 export default {
+  prepare(edit, ctx) {
+    const { blk, s } = mount(edit, ctx);
+    ctx.gsap.set(s, { opacity: 0 });
+    reserve(blk, s);
+  },
   play(edit, ctx) {
     const { blk, s } = mount(edit, ctx);
-    return ctx.gsap.timeline({ paused: true, onComplete: () => settle(blk, s) })
+    reserve(blk, s);
+    return ctx.gsap.timeline({ paused: true })
       .fromTo(s, { opacity: 0, y: -40, rotation: -8, scale: 1.12, "--shadow": 1 },
         { opacity: 1, y: 0, rotation: +s.dataset.rot, scale: 1, "--shadow": 0, duration: 0.9, ease: "power3.out" });
   },
   finish(edit, ctx) {
     const { blk, s } = mount(edit, ctx);
     ctx.gsap.set(s, { opacity: 1, y: 0, scale: 1, rotation: +s.dataset.rot, "--shadow": 0 });
-    settle(blk, s);
+    reserve(blk, s);
   },
 };

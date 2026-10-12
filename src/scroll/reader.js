@@ -1,51 +1,33 @@
-// Decides when each passage is edited: only after the reader has had it in the middle of the
-// screen long enough to read it, one passage at a time, in page order.
+// Decides when each passage is edited: only after the reader has read to its end, one passage
+// at a time, in page order.
 
-// A passage counts as being read once its first line is above READ_START (fraction of the
-// screen height from the top), until its last line rises above READ_END.
-export const READ_START = 0.55;
-export const READ_END = 0.12;
-// A passage is only edited once its last line is above this line, so a passage taller than
-// the screen is not edited before the reader has scrolled to its end.
-export const LAST_LINE_SEEN = 0.9;
-const MS_PER_WORD = 120; // skimming pace, about 500 words a minute
-const MIN_MS = 800;
-const MAX_MS = 3500;
+// A passage is only edited once its last line has risen above READ_DONE (fraction of the
+// screen height from the top). A strike leaves the text readable, so a passage that is only
+// struck through can be edited sooner.
+export const READ_DONE = 0.2;
+export const READ_DONE_STRIKE = 0.4;
 
-export const readTime = (words) => Math.min(MAX_MS, Math.max(MIN_MS, words * MS_PER_WORD));
-
-export function zoneState(rect, vh) {
-  if (rect.bottom <= 0) return "passed";
-  if (rect.top < vh * READ_START && rect.bottom > vh * READ_END) return "reading";
-  return "away";
-}
-
-// passages: [{ controller, need (ms), measure() → { top, bottom } }], in page order.
+// passages: [{ controller, strikeOnly, measure() → { top, bottom } }], in page order.
 export function createReader(passages) {
-  const ps = passages.map((p) => ({ ...p, dwell: 0, zone: "away", rect: null }));
   let playing = null;
   return {
-    tick(dt, vh) {
+    tick(vh) {
       if (playing && playing.controller.state === "played") playing = null;
-      for (const p of ps) {
+      const ready = [];
+      for (const p of passages) {
         const c = p.controller;
         if (c.state === "played") continue;
-        p.rect = p.measure();
-        p.zone = zoneState(p.rect, vh);
-        if (p.zone === "passed") {
+        const { bottom } = p.measure();
+        if (bottom <= 0) {
           c.leave();
           if (playing === p) playing = null;
-        } else if (c.state === "idle" && p.zone === "reading") {
-          p.dwell += dt;
+        } else if (c.state === "idle" && bottom <= vh * (p.strikeOnly ? READ_DONE_STRIKE : READ_DONE)) {
+          ready.push(p);
         }
       }
-      if (!playing) {
-        const next = ps.find((p) => p.controller.state === "idle" && p.zone === "reading"
-          && p.dwell >= p.need && p.rect.bottom <= vh * LAST_LINE_SEEN);
-        if (next) {
-          playing = next;
-          next.controller.trigger();
-        }
+      if (!playing && ready.length) {
+        playing = ready[0];
+        playing.controller.trigger();
       }
     },
   };

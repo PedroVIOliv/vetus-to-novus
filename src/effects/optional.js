@@ -25,6 +25,7 @@ function mount(edit, ctx) {
 }
 
 export default {
+  prepare: mount,
   play(edit, ctx) {
     const { clip, tabs, note } = mount(edit, ctx);
     return ctx.gsap.timeline({ paused: true })

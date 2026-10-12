@@ -1,9 +1,7 @@
 .tear-zone { position: relative; margin: .3rem -1rem; perspective: 900px; }
-.tear-piece {
-  position: relative; z-index: 3; padding: 1rem 1rem;
-  background: radial-gradient(ellipse at 40% 20%, var(--paper-0), var(--paper-1));
-  transform-origin: 50% 0;
-}
+.tear-piece { position: relative; z-index: 3; padding: 1rem 1rem; transform-origin: 50% 0; }
+/* Its own paper only once torn: before that it must not show as a patch on the page. */
+.tear-zone.is-open > .tear-piece { background: radial-gradient(ellipse at 40% 20%, var(--paper-0), var(--paper-1)); }
 .hole {
   position: absolute; inset: 0; opacity: 0; z-index: 1;
   background: radial-gradient(ellipse at 50% 40%, var(--desk-0), var(--desk-1) 70%);
