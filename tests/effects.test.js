@@ -110,13 +110,25 @@ describe("tear", () => {
 });
 
 describe("optional and moved", () => {
-  it("optional: clip and option tabs attached to target, labelled with options", () => {
+  it("optional: option tabs attached to target, labelled with options", () => {
     const ctx = setup();
     const e = { id: "o1", type: "optional", target: "foot.sign", options: ["I", "II", "III", "IV"], replacement: [{ id: "o1r", kind: "rubric", text: "Or another Eucharistic Prayer." }], source: {} };
     getEffect("optional").finish(e, ctx);
-    const blk = ctx.section.querySelector('[data-block="foot.sign"]');
-    expect([...blk.querySelectorAll(".opt-tab")].map((t) => t.textContent)).toEqual(["I", "II", "III", "IV"]);
-    expect(blk.querySelector(".opt-clip")).not.toBeNull();
+    const fan = ctx.section.querySelector('[data-block="foot.sign"]').nextElementSibling;
+    expect([...fan.querySelectorAll(".opt-tab")].map((t) => t.textContent)).toEqual(["I", "II", "III", "IV"]);
+  });
+  it("optional: options follow notes added to the block's text, whichever is placed first", () => {
+    for (const order of [["added", "optional"], ["optional", "added"]]) {
+      const ctx = setup();
+      const edits = {
+        added: { id: "ad", type: "added", target: "foot.sign", replacement: [{ id: "adx", kind: "prayer", text: "…and omission." }] },
+        optional: { id: "op", type: "optional", target: "foot.sign", options: ["I", "II"], replacement: [{ id: "opx", kind: "rubric", text: "Or another form." }] },
+      };
+      for (const t of order) getEffect(t).prepare(edits[t], ctx);
+      const next = ctx.section.querySelector('[data-block="foot.sign"]').nextElementSibling;
+      expect(next.classList).toContain("scrap-slot");
+      expect(next.nextElementSibling.classList).toContain("opt-fan");
+    }
   });
   it("moved: block relocated after destination, ghost left behind", () => {
     const ctx = setup();
